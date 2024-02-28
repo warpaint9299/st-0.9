@@ -5,10 +5,10 @@ Subject: [PATCH] Pressing right-click pastes from the primary section. If
  combined with the clibpoard-patch right-click pastes from the clipboard
 
 ---
- st/config.h | 2 +-
+ st/config.def.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/st/config.h b/st/config.h
+diff --git a/st/config.def.h b/st/config.def.h
 index 968ad8f..3bee657 100644
 --- a/st/config.h
 +++ b/st/config.h

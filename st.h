@@ -11,7 +11,7 @@
 #define DIVCEIL(n, d)		(((n) + ((d) - 1)) / (d))
 #define DEFAULT(a, b)		(a) = (a) ? (a) : (b)
 #define LIMIT(x, a, b)		(x) = (x) < (a) ? (a) : (x) > (b) ? (b) : (x)
-#define ATTRCMP(a, b)		(((a).mode & (~ATTR_WRAP)) != ((b).mode & (~ATTR_WRAP)) || \
+#define ATTRCMP(a, b)		(((a).mode & (~ATTR_WRAP) & (~ATTR_LIGA)) != ((b).mode & (~ATTR_WRAP) & (~ATTR_LIGA)) || \
 				(a).fg != (b).fg || \
 				(a).bg != (b).bg)
 #define TIMEDIFF(t1, t2)	((t1.tv_sec-t2.tv_sec)*1000 + \
@@ -20,24 +20,24 @@
 
 #define TRUECOLOR(r,g,b)	(1 << 24 | (r) << 16 | (g) << 8 | (b))
 #define IS_TRUECOL(x)		(1 << 24 & (x))
+#define HISTSIZE            2000
 
 enum glyph_attribute {
 	ATTR_NULL       = 0,
-	ATTR_SET        = 1 << 0,
-	ATTR_BOLD       = 1 << 1,
-	ATTR_FAINT      = 1 << 2,
-	ATTR_ITALIC     = 1 << 3,
-	ATTR_UNDERLINE  = 1 << 4,
-	ATTR_BLINK      = 1 << 5,
-	ATTR_REVERSE    = 1 << 6,
-	ATTR_INVISIBLE  = 1 << 7,
-	ATTR_STRUCK     = 1 << 8,
-	ATTR_WRAP       = 1 << 9,
-	ATTR_WIDE       = 1 << 10,
-	ATTR_WDUMMY     = 1 << 11,
-	ATTR_SELECTED   = 1 << 12,
+	ATTR_BOLD       = 1 << 0,
+	ATTR_FAINT      = 1 << 1,
+	ATTR_ITALIC     = 1 << 2,
+	ATTR_UNDERLINE  = 1 << 3,
+	ATTR_BLINK      = 1 << 4,
+	ATTR_REVERSE    = 1 << 5,
+	ATTR_INVISIBLE  = 1 << 6,
+	ATTR_STRUCK     = 1 << 7,
+	ATTR_WRAP       = 1 << 8,
+	ATTR_WIDE       = 1 << 9,
+	ATTR_WDUMMY     = 1 << 10,
+	ATTR_BOXDRAW    = 1 << 11,
+	ATTR_LIGA       = 1 << 12,
 	ATTR_BOLD_FAINT = ATTR_BOLD | ATTR_FAINT,
-	ATTR_DIRTYUNDERLINE = 1 << 15,
 };
 
 enum selection_mode {
@@ -69,8 +69,6 @@ typedef struct {
 	ushort mode;      /* attribute flags */
 	uint32_t fg;      /* foreground  */
 	uint32_t bg;      /* background  */
-	int ustyle;	  /* underline style */
-	int ucolor[3];    /* underline color */
 } Glyph;
 
 typedef Glyph *Line;
@@ -83,20 +81,10 @@ typedef union {
 	const char *s;
 } Arg;
 
-typedef struct {
-	uint b;
-	uint mask;
-	void (*func)(const Arg *);
-	const Arg arg;
-} MouseKey;
-
 void die(const char *, ...);
 void redraw(void);
 void draw(void);
 
-void kscrolldown(const Arg *);
-void kscrollup(const Arg *);
-void fullscreen(const Arg *);
 void printscreen(const Arg *);
 void printsel(const Arg *);
 void sendbreak(const Arg *);
@@ -104,7 +92,6 @@ void toggleprinter(const Arg *);
 
 int tattrset(int);
 void tnew(int, int);
-int tisaltscreen(void);
 void tresize(int, int);
 void tsetdirtattr(int);
 void tupdatebgcolor(int, int);
@@ -130,6 +117,14 @@ void *xmalloc(size_t);
 void *xrealloc(void *, size_t);
 char *xstrdup(const char *);
 
+int isboxdraw(Rune);
+ushort boxdrawindex(const Glyph *);
+#ifdef XFT_VERSION
+/* only exposed to x.c, otherwise we'll need Xft.h for the types */
+void boxdraw_xinit(Display *, Colormap, XftDraw *, Visual *);
+void drawboxes(int, int, int, int, XftColor *, XftColor *, const XftGlyphFontSpec *, int);
+#endif
+
 /* config.h globals */
 extern char *utmp;
 extern char *scroll;
@@ -143,4 +138,5 @@ extern unsigned int tabspaces;
 extern unsigned int defaultfg;
 extern unsigned int defaultbg;
 extern unsigned int defaultcs;
-extern MouseKey mkeys[];
+extern const int boxdraw, boxdraw_bold, boxdraw_braille;
+extern float alpha;

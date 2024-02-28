@@ -5,8 +5,8 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "VictorMono Nerd Font:style=Bold,Italic:pixelsize=18:antialias=true:autohint=true";
-static int borderpx = 0;
+static char *font = "VictorMono Nerd Font:style=Bold:pixelsize=18:antialias=true:autohint=true";
+static int borderpx = 2;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -68,6 +68,18 @@ static unsigned int blinktimeout = 800;
 static unsigned int cursorthickness = 2;
 
 /*
+ * 1: render most of the lines/blocks characters without using the font for
+ *    perfect alignment between cells (U2500 - U259F except dashes/diagonals).
+ *    Bold affects lines thickness if boxdraw_bold is not 0. Italic is ignored.
+ * 0: disable (render all U25XX glyphs normally from the font).
+ */
+const int boxdraw = 0;
+const int boxdraw_bold = 0;
+
+/* braille (U28XX):  1: render as adjacent "pixels",  0: use font */
+const int boxdraw_braille = 0;
+
+/*
  * bell volume. It must be a value between -100 and 100. Use 0 for disabling
  * it
  */
@@ -94,7 +106,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.8;
+float alpha = 1.0;
 
 typedef struct {
 	const char* const colors[258]; /* terminal colors */
@@ -221,12 +233,10 @@ static uint forcemousemod = ShiftMask;
 static MouseShortcut mshortcuts[] = {
 	/* mask                 button   function        argument       release */
 	{ XK_ANY_MOD,           Button3, selpaste,       {.i = 0},      1 },
-};
-
-MouseKey mkeys[] = {
-	/* button               mask            function        argument */
-	{ Button4,              ShiftMask,      kscrollup,      {.i =  1} },
-	{ Button5,              ShiftMask,      kscrolldown,    {.i =  1} },
+	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
+	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
+	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"} },
+	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
 };
 
 /* Internal keyboard shortcuts. */
@@ -247,10 +257,6 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-	{ XK_NO_MOD,            XK_F11,         fullscreen,     {.i =  0} },
-	{ MODKEY,               XK_Return,      fullscreen,     {.i =  0} },
-	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
-	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
 	{ MODKEY,               XK_1,           selectscheme,   {.i =  0} },
 	{ MODKEY,               XK_2,           selectscheme,   {.i =  1} },
 	{ MODKEY,               XK_3,           selectscheme,   {.i =  2} },
