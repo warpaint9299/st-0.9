@@ -60,10 +60,10 @@ static void zoom(const Arg *);
 static void zoomabs(const Arg *);
 static void zoomreset(const Arg *);
 static void ttysend(const Arg *);
-void kscrollup(const Arg *);
-void kscrolldown(const Arg *);
 static void nextscheme(const Arg *);
 static void selectscheme(const Arg *);
+void kscrollup(const Arg *);
+void kscrolldown(const Arg *);
 
 /* config.h for applying patches and the configuration. */
 #include "config.h"
@@ -257,6 +257,11 @@ static int frccap = 0;
 static char *usedfont = NULL;
 static double usedfontsize = 0;
 static double defaultfontsize = 0;
+
+/* declared in config.h */
+extern int disablebold;
+extern int disableitalic;
+extern int disableroman;
 
 static char *opt_alpha = NULL;
 static char *opt_class = NULL;
@@ -1435,8 +1440,8 @@ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x
 		if (glyphidx) {
 			specs[numspecs].font = font->match;
 			specs[numspecs].glyph = glyphidx;
-			specs[numspecs].x = (short)xp + cxoffset;
-			specs[numspecs].y = (short)yp + cyoffset;
+			specs[numspecs].x = (short)xp;
+			specs[numspecs].y = (short)yp;
 			xp += runewidth;
 			numspecs++;
 			continue;
@@ -1616,17 +1621,17 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
     if (dmode & DRAW_BG) {
         /* Intelligent cleaning up of the borders. */
         if (x == 0) {
-            xclear(0, (y == 0)? 0 : winy, borderpx,
-                   winy + win.ch +
-                   ((winy + win.ch >= borderpx + win.th)? win.h : 0));
+			xclear(0, (y == 0)? 0 : winy, win.hborderpx,
+					winy + win.ch +
+					((winy + win.ch >= win.vborderpx + win.th)? win.h : 0));
         }
-        if (winx + width >= borderpx + win.tw) {
+		if (winx + width >= win.hborderpx + win.tw) {
             xclear(winx + width, (y == 0)? 0 : winy, win.w,
-                   ((winy + win.ch >= borderpx + win.th)? win.h : (winy + win.ch)));
+					((winy + win.ch >= win.vborderpx + win.th)? win.h : (winy + win.ch)));
         }
         if (y == 0)
-            xclear(winx, 0, winx + width, borderpx);
-        if (winy + win.ch >= borderpx + win.th)
+			xclear(winx, 0, winx + width, win.vborderpx);
+		if (winy + win.ch >= win.vborderpx + win.th)
             xclear(winx, winy + win.ch, winx + width, win.h);
         /* Fill the background */
         XftDrawRect(xw.draw, bg, winx, winy, width, win.ch);
@@ -1641,18 +1646,17 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
 			XftDrawGlyphFontSpec(xw.draw, fg, specs, len);
 		}
 
-	/* Render underline and strikethrough. */
-	if (base.mode & ATTR_UNDERLINE) {
-		XftDrawRect(xw.draw, fg, winx, winy + dc.font.ascent * chscale + 1,
-				width, 1);
-	}
+        /* Render underline and strikethrough. */
+        if (base.mode & ATTR_UNDERLINE) {
+            XftDrawRect(xw.draw, fg, winx, winy + dc.font.ascent + 1,
+                        width, 1);
+        }
 
         if (base.mode & ATTR_STRUCK) {
             XftDrawRect(xw.draw, fg, winx, winy + 2 * dc.font.ascent / 3,
                         width, 1);
         }
     }
-
 }
 
 void
