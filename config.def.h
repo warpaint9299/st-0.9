@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "VictorMono Nerd Font:style=Bold:pixelsize=22:antialias=true:autohint=true";
+static char *font = "VictorMono Nerd Font:style=Bold:pixelsize=18:antialias=true:autohint=true";
 
 /* Spare fonts */ 
 static char *font2[] = {
