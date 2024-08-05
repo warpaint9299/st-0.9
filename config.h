@@ -5,7 +5,8 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "VictorMono Nerd Font:style=Bold:pixelsize=18:antialias=true:autohint=true";
+static char *font = "FantasqueSansM Nerd Font:style=Regular:pixelsize=22:antialias=true:autohint=true";
+// static char *font = "VictorMono Nerd Font:style=Bold:pixelsize=18:antialias=true:autohint=true";
 
 /* Spare fonts */ 
 static char *font2[] = {
@@ -15,7 +16,7 @@ static char *font2[] = {
 
 /* disable bold, italic and roman fonts globally */
 int disablebold = 0;
-int disableitalic = 1;
+int disableitalic = 0;
 int disableroman = 0;
 
 static int borderpx = 2;
