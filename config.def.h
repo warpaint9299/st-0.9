@@ -5,13 +5,13 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "FantasqueSansM Nerd Font:style=Regular:pixelsize=22:antialias=true:autohint=true";
-// static char *font = "VictorMono Nerd Font:style=Bold:pixelsize=18:antialias=true:autohint=true";
+static char *font = "Comic Mono:style=Regular:pixelsize=22:antialias=true:autohint=true";
 
 /* Spare fonts */ 
 static char *font2[] = {
-/*	"Inconsolata for Powerline:pixelsize=12:antialias=true:autohint=true", */
-/*	"Hack Nerd Font Mono:pixelsize=11:antialias=true:autohint=true", */
+	// "FantasqueSansM Nerd Font:style=Regular:pixelsize=22:antialias=true:autohint=true",
+	// "VictorMono Nerd Font:style=Bold:pixelsize=18:antialias=true:autohint=true",
+
 };
 
 /* disable bold, italic and roman fonts globally */
