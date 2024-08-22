@@ -5,12 +5,20 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Comic Mono:style=Regular:pixelsize=22:antialias=true:autohint=true";
+
+static char *fonts[] = {
+	"Comic Mono:style=Normal:pixelsize=22:antialias=true:autohint=true",
+	"Comic Code:style=Regular:pixelsize=22:antialias=true:autohint=true",
+	"FantasqueSansM Nerd Font:style=Regular:pixelsize=22:antialias=true:autohint=true",
+	"VictorMono Nerd Font:style=Bold:pixelsize=16:antialias=true:autohint=true",
+};
+
+static size_t currentfont = 0;
 
 /* Spare fonts */ 
 static char *font2[] = {
-	// "FantasqueSansM Nerd Font:style=Regular:pixelsize=22:antialias=true:autohint=true",
-	// "VictorMono Nerd Font:style=Bold:pixelsize=18:antialias=true:autohint=true",
+	"FantasqueSansM Nerd Font:style=Regular:pixelsize=22:antialias=true:autohint=true",
+	"VictorMono Nerd Font:style=Bold:pixelsize=16:antialias=true:autohint=true",
 
 };
 
@@ -282,6 +290,7 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
 	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
+	{ TERMMOD,              XK_S,           cyclefonts,     {}        },
 };
 
 /*
