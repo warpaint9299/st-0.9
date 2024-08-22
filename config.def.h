@@ -7,8 +7,8 @@
  */
 
 static char *fonts[] = {
+	// "Comic Code:style=Regular:pixelsize=22:antialias=true:autohint=true",
 	"Comic Mono:style=Normal:pixelsize=22:antialias=true:autohint=true",
-	"Comic Code:style=Regular:pixelsize=22:antialias=true:autohint=true",
 	"FantasqueSansM Nerd Font:style=Regular:pixelsize=22:antialias=true:autohint=true",
 	"VictorMono Nerd Font:style=Bold:pixelsize=16:antialias=true:autohint=true",
 };
