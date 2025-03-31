@@ -6,19 +6,19 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 
-static char *fonts[] = {
-	// "Comic Code:style=Regular:pixelsize=22:antialias=true:autohint=true",
-	"Comic Mono:style=Normal:pixelsize=22:antialias=true:autohint=true",
-	"FantasqueSansM Nerd Font:style=Regular:pixelsize=22:antialias=true:autohint=true",
-	"VictorMono Nerd Font:style=Bold:pixelsize=16:antialias=true:autohint=true",
+static char *fonts[] 	= {
+	"Comic Code:style=Medium:pixelsize=22:antialias=true:autohint=true",
+	"Symbola:pixelsize=22:antialias=true:autohint=true",
+	"LXGW WenKai:style=Medium:pixelsize=22:antialias=true:autohint=true",
+	"VictorMono Nerd Font:style=Bold:pixelsize=22:antialias=true:autohint=true",
 };
 
 static size_t currentfont = 0;
 
-/* Spare fonts */ 
+/* Spare fonts */
 static char *font2[] = {
+	"Symbola:pixelsize=22:antialias=true:autohint=true",
 	"FantasqueSansM Nerd Font:style=Regular:pixelsize=22:antialias=true:autohint=true",
-	"VictorMono Nerd Font:style=Bold:pixelsize=16:antialias=true:autohint=true",
 
 };
 
